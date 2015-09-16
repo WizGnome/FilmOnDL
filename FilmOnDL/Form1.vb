@@ -82,6 +82,8 @@ Public Class Form1
                     ' Get the recording status
                     P1 = response.IndexOf(",""status"":""", P1)
                     RecStatus = Mid$(response, P1 + 12, InStr(Mid$(response, P1 + 13), """"))
+                    RecTitle = Regex.Replace(RecTitle, "\?", "")
+                    RecTitle = Regex.Replace(RecTitle, "'", "")
 
                     If RecStatus = "Recorded" Then
                         ' Get the recording url
