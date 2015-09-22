@@ -110,7 +110,7 @@ Public Class Form1
                                 data = Encoding.UTF8.GetBytes("{""record_id"" : """ + Mid(RecLink, P2 + 5, 7) + """}")
                                 Dim DVRRemove As New Uri("http://www.filmon.com/tv/api/dvr/remove?session_key=" + SessionKey)
                                 DelResponse = SendRequest(DVRRemove, data, "application/json", "POST")
-                                MsgBox(DelResponse)
+                                ' MsgBox(DelResponse)
                             End If
 
                         End If
