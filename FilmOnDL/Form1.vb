@@ -44,7 +44,7 @@ Public Class Form1
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
 
         'Send Init Command
-        Dim data = Encoding.UTF8.GetBytes("{""app_id"" : ""foo"",""app_secret"" : ""bar""}")
+        Dim data = Encoding.UTF8.GetBytes("{""app_id"" : ""123"",""app_secret"" : ""123""}")
         Dim FilmOn As New Uri("http://www.filmon.com/tv/api/init")
         Dim response As String = SendRequest(FilmOn, data, "application/json", "POST")
         Dim UserPass As String = GenerateMd5Hash(TxtPassword.Text)
@@ -84,6 +84,7 @@ Public Class Form1
                     RecStatus = Mid$(response, P1 + 12, InStr(Mid$(response, P1 + 13), """"))
                     RecTitle = Regex.Replace(RecTitle, "\?", "")
                     RecTitle = Regex.Replace(RecTitle, "'", "")
+                    RecTitle = Regex.Replace(RecTitle, ":", "")
 
                     If RecStatus = "Recorded" Then
                         ' Get the recording url
