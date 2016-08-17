@@ -44,7 +44,7 @@ Public Class Form1
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
 
         'Send Init Command
-        Dim data = Encoding.UTF8.GetBytes("{""app_id"" : ""foo"",""app_secret"" : ""bar""}")
+        Dim data = Encoding.UTF8.GetBytes("{""app_id"" : ""123"",""app_secret"" : ""123""}")
         Dim FilmOn As New Uri("http://www.filmon.com/tv/api/init")
         Dim response As String = SendRequest(FilmOn, data, "application/json", "POST")
         Dim UserPass As String = GenerateMd5Hash(TxtPassword.Text)
@@ -84,10 +84,12 @@ Public Class Form1
                     RecStatus = Mid$(response, P1 + 12, InStr(Mid$(response, P1 + 13), """"))
                     RecTitle = Regex.Replace(RecTitle, "\?", "")
                     RecTitle = Regex.Replace(RecTitle, "'", "")
+                    RecTitle = Regex.Replace(RecTitle, ":", "")
 
                     If RecStatus = "Recorded" Then
                         ' Get the recording url
-                        P1 = response.IndexOf(",""download_link"":""", P1)
+                        ' P1 = response.IndexOf(",""download_link"":""", P1)
+                        P1 = response.IndexOf(",""stream_url"":""", P1)
                         RecLink = Mid$(response, P1 + 19, InStr(Mid$(response, P1 + 20), """"))
 
                         P2 = RecLink.IndexOf(".mp4") - 18
@@ -96,8 +98,8 @@ Public Class Form1
                         ' Format save file name
                         RecStatus = RecTitle & " " & Mid(RecDate, 9, 2) & "-" & Mid(RecDate, 6, 2) & "-" & Mid(RecDate, 3, 2) & ".mp4"
                         ' Create Linux download command: wget http:\/\/s3.dvr.gv.filmon.com\/schdld\/14\/36\/248\/2015.09.06\/2632049.mp4 -O Lady Chatterley's Lover.mp4
-                        Text1.Text = Text1.Text & "wget " & RecLink & " -O """ & RecTitle & " " & Mid(RecDate, 9, 2) & "-" & Mid(RecDate, 6, 2) & "-" & Mid(RecDate, 3, 2) & ".mp4""" & Environment.NewLine
-
+                        ' Text1.Text = Text1.Text & "wget " & RecLink & " -O """ & RecTitle & " " & Mid(RecDate, 9, 2) & "-" & Mid(RecDate, 6, 2) & "-" & Mid(RecDate, 3, 2) & ".mp4""" & Environment.NewLine
+                        Text1.Text = Text1.Text & "wget htt" & Mid(RecLink, 1, RecLink.IndexOf("dvr\/_de")) & Mid(RecLink, RecLink.IndexOf("_definst") + 12, 44) & " -O """ & RecTitle & " " & Mid(RecDate, 9, 2) & "-" & Mid(RecDate, 6, 2) & "-" & Mid(RecDate, 3, 2) & ".mp4""" & Environment.NewLine
                         If CheckBox1.Checked Then
                             RecLink = Regex.Replace(RecLink, "\\", "")
                             RecLink = "http://hls" + Mid(RecLink, 10)
