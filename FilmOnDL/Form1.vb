@@ -99,10 +99,11 @@ Public Class Form1
                         RecStatus = RecTitle & " " & Mid(RecDate, 9, 2) & "-" & Mid(RecDate, 6, 2) & "-" & Mid(RecDate, 3, 2) & ".mp4"
                         ' Create Linux download command: wget http:\/\/s3.dvr.gv.filmon.com\/schdld\/14\/36\/248\/2015.09.06\/2632049.mp4 -O Lady Chatterley's Lover.mp4
                         ' Text1.Text = Text1.Text & "wget " & RecLink & " -O """ & RecTitle & " " & Mid(RecDate, 9, 2) & "-" & Mid(RecDate, 6, 2) & "-" & Mid(RecDate, 3, 2) & ".mp4""" & Environment.NewLine
-                        Text1.Text = Text1.Text & "wget htt" & Mid(RecLink, 1, RecLink.IndexOf("dvr\/_de")) & Mid(RecLink, RecLink.IndexOf("_definst") + 12, 44) & " -O """ & RecTitle & " " & Mid(RecDate, 9, 2) & "-" & Mid(RecDate, 6, 2) & "-" & Mid(RecDate, 3, 2) & ".mp4""" & Environment.NewLine
+                        Text1.Text = Text1.Text & "wget htt" & Mid(RecLink, 1, RecLink.IndexOf("dvr\/_de")) & Mid(RecLink, RecLink.IndexOf("_definst") + 12, RecLink.IndexOf(".mp4") - RecLink.IndexOf("_definst") - 7) & " -O """ & RecTitle & " " & Mid(RecDate, 9, 2) & "-" & Mid(RecDate, 6, 2) & "-" & Mid(RecDate, 3, 2) & ".mp4""" & Environment.NewLine
                         If CheckBox1.Checked Then
+                            RecLink = "htt" & Mid(RecLink, 1, RecLink.IndexOf("dvr\/_de")) & Mid(RecLink, RecLink.IndexOf("_definst") + 12, RecLink.IndexOf(".mp4") - RecLink.IndexOf("_definst") - 7)
                             RecLink = Regex.Replace(RecLink, "\\", "")
-                            RecLink = "http://hls" + Mid(RecLink, 10)
+                            RecLink = "http://hls" + Mid(RecLink, 11)
                             ' Download the recording
                             filepath = System.IO.Path.Combine(My.Computer.FileSystem.SpecialDirectories.MyPictures, "FilmOn\" & RecStatus)
                             My.Computer.Network.DownloadFile(RecLink, filepath, "", "", True, 50000, True)
